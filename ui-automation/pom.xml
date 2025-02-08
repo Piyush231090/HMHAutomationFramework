@@ -11,7 +11,7 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.5.0</version>
+            <version>4.28.0</version>
         </dependency>
 
         <!-- TestNG -->
@@ -29,13 +29,7 @@
             <version>5.2.2</version>
         </dependency>
 
-        <!-- WebDriverManager -->
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>5.3.1</version>
-        </dependency>
-
+    
         <!-- Log4j (Logging) -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
