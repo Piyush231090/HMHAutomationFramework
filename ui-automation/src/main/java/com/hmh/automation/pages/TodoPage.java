@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -65,7 +66,58 @@ public class TodoPage {
      */
     @FindBy(xpath = "//ul[@class='todo-list']/li//button[@class='destroy']")
     private List<WebElement> destroy_Buttons;
+    
+    /**
+     * List of WebElements representing the Clear Completed option
+     */
+    @FindBy(xpath = "//button[normalize-space()='Clear completed']")
+    private WebElement clearCompleted_Button;
+    
+    /**
+     * This is completed filter button 
+     */
+    @FindBy(xpath = "//a[normalize-space()='Completed']")
+    private WebElement completed_Button;
+    
+    /**
+     * It gives the list of tasks that are marked as completed
+     */
+    @FindBy(xpath = "//ul[@class='todo-list']//li[@class='completed']")
+    private List<WebElement> completedToDoItems;
+    
+    /**
+     * This is Active filter button 
+     */
+    @FindBy(xpath = "//a[normalize-space()='Active']")
+    private WebElement active_Button;
+    
+    
+    /**
+     * It gives the list of tasks that are marked as Active
+     */
+    @FindBy(xpath = "//ul[@class='todo-list']//li[not(contains(@class, 'completed'))]")
+    private List<WebElement> activeToDoItems;
+    
+    /**
+     * This is All filter Button
+     */
+    @FindBy(xpath = "//a[normalize-space()='All']")
+    private WebElement all_Button;
+    
 
+    /**
+     * List of WebElements representing the tado task label buttons for editing test".
+     */
+    @FindBy(xpath = "//ul[@class='todo-list']/li//label")
+    private List<WebElement> todoLabel;
+    
+    /**
+     * List of WebElements representing the todo task label buttons for editing test".
+     */
+    @FindBy(xpath = "(//div[@class='input-container'])[2]")
+    private WebElement editInput;
+    
+    
     // Methods
 
     /**
@@ -75,6 +127,14 @@ public class TodoPage {
      */
     public void addTodoItem(String task) {
         todoInput.sendKeys(task + "\n");
+    }
+    
+    /**
+     * Getting text of the todo task
+     * @param index The index of todo task to get text
+     */
+    public String getToDoText(int index) {
+        return todoItemList.get(index).getText();
     }
 
     /**
@@ -91,17 +151,57 @@ public class TodoPage {
      *
      * @param index The index of the task to be deleted.
      */
-    public void deleteTodoItem(int index) {
-    		    WebElement deleteButton = wait.until(ExpectedConditions.elementToBeClickable(destroy_Buttons.get(index)));
-    		    deleteButton.click();
-    }
 
-    public void deleteTodoItem1(int index) {
+    public void deleteTodoItem(int index) {
     	 Actions actions = new Actions(driver);
     	    WebElement todoItem = todoItemList.get(index);
     	    actions.moveToElement(todoItem).perform(); // Hover over the item
-    	    wait.until(ExpectedConditions.elementToBeClickable(destroy_Buttons.get(index))).click();
-    	    
+    	    wait.until(ExpectedConditions.elementToBeClickable(destroy_Buttons.get(index))).click();    
+    }
+    
+    /**
+     * Clears the tasks that are marked as completed
+     * 
+     */
+    public void clearCompleteToDoItems() {
+    	clearCompleted_Button.click();
+    	clearCompletedTask();
+    }
+    
+    /**
+     * Gives the list of completed task
+     */
+    public void filterCompletedItems() {
+    	completed_Button.click();
+    }
+    
+    /**
+     * Gives the size of completed items from the tasks
+     */
+    public int listOfCompletedToDoItems() {
+    	return completedToDoItems.size();
+    }
+    
+    /**
+     * clicks on Active button
+     */
+    public void filterActiveToDoItems() {
+    	active_Button.click();
+    }
+    
+    /**
+     * clicks on All filter button
+     */
+    public void filterAllToDoItems() {
+    	all_Button.click();
+    }
+    
+    
+    /**
+     * Gives the list of Active ToDo tasks
+     */
+    public int listOfActiveToDoItems() {
+    	return activeToDoItems.size();
     }
    
     /**
@@ -128,7 +228,7 @@ public class TodoPage {
      * Marks all tasks in the Todo list as completed.
      */
     public void markAllAsCompleted() {
-        toggle_all_button.click();
+        toggle_all_button.click(); 
     }
 
     /**
@@ -143,5 +243,39 @@ public class TodoPage {
     		}
     	}
     return true;
+    }
+   
+    /**
+     * 
+     * 
+     */
+    public void clearCompletedTask() {
+    	int index = 0;
+    	for(WebElement webElement:todoItemList) {
+    		if(webElement.getDomAttribute(CLASS).contains(COMPLETED)) {
+    			deleteTodoItem(index);
+    			index++;
+    		}
+    		else {
+    		index++;
+    	    }
+        }
+    }
+    
+    
+    /**
+     * @throws InterruptedException 
+     * 
+     */
+    public void editText(int index,String text){
+    	//Actions actions = new Actions (driver);
+    	//actions.doubleClick(todoLabel.get(index)).perform();
+    	WebElement taskToEdit = todoLabel.get(index);
+    	 ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('dblclick', {bubbles: true}))", taskToEdit);
+
+    	WebElement editField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='view']//input[@id='todo-input']")));
+    	editField.clear();
+    	editField.sendKeys(text);
+    	editField.sendKeys(Keys.ENTER);
     }
 }

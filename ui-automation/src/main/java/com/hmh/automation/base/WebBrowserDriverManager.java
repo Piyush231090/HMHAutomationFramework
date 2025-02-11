@@ -10,7 +10,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 public class WebBrowserDriverManager {
 	
 	protected WebDriver driver;
-
     public WebDriver setup(String browser) {
         if (browser.equalsIgnoreCase("chrome")) {
             driver = new ChromeDriver(); 
