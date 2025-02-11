@@ -1,5 +1,7 @@
 package com.hmh.automation.tests;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -19,6 +21,8 @@ public class TodoPageTest extends WebBrowserDriverManager {
     private WebDriver driver;
     private TodoPage todoPage;
     private static final String TASK_NAME_LONG_TEXT="this is supposed to be a very long task and you have to perform it in very less time";
+    private static final Logger logger = LogManager.getLogger(TodoPageTest.class);
+
 
     /**
      * Sets up the WebDriver and initializes the TodoPage object before running the tests.
@@ -26,6 +30,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @BeforeClass
     public void setUpTest() {
+    	logger.info("Setting up the test..");
         driver = setup(ConfigReader.getConfig().getProperty("browser"));  // Start browser
         driver.get(ConfigReader.getConfig().getProperty("url"));  // Navigate to the application
         todoPage = new TodoPage(driver);  // Initialize Page Object Model (POM)
@@ -37,6 +42,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 1)
     public void testAddTodoItem() {
+    	logger.info("Inside testAddTodoItem to add task in todo ..");
         todoPage.addTodoItem("Buy groceries");
         Assert.assertEquals(todoPage.getTodoCount(), 1, "Todo count mismatch!");
     }
@@ -47,6 +53,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 2)
     public void testAddMultipleTodoItems(){
+    	logger.info("Inside testAddMultipleTodoItems to add multiple tasks in todo ..");
         todoPage.addTodoItem("Read book");
         todoPage.addTodoItem("Go for a walk");
         Assert.assertEquals(todoPage.getTodoCount(), 3, "Incorrect number of todos added!");
@@ -59,6 +66,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 3)
     public void testCompleteTodo() {
+    	logger.info("Inside testCompleteTodo to complete a task");
         todoPage.completeTodoItem(0);  
         Assert.assertTrue(todoPage.isTaskCompleted(0), "Task was not marked as completed!");
     }
@@ -69,6 +77,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 4)
     public void testAllMarkedAsCompleted() {
+    	logger.info("Inside testAllMarkedAsCompleted method to mark all task as complete");
         todoPage.markAllAsCompleted();
         Assert.assertTrue(todoPage.isAllTaskCompleted(), "Tasks are still marked as not completed!");
     }
@@ -80,6 +89,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 5)
     public void testDeleteTask() {
+    	logger.info("Inside testDeleteTask method to delete a task");
         todoPage.deleteTodoItem(0);  // Delete the first task
         Assert.assertEquals(todoPage.getTodoCount(), 2, "Todo count mismatch after deletion!");
     }
@@ -91,6 +101,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 6)
     public void testClearCompletedTask() {
+    	logger.info("Inside testClearCompletedTask method to delete a completed task");
     	Assert.assertEquals(todoPage.getTodoCount(), 2);
     	todoPage.completeTodoItem(0);
     	todoPage.clearCompleteToDoItems();
@@ -103,6 +114,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 7)
     public void testCompletedTaskFilter() {
+    	logger.info("Inside testCompletedTaskFilter method to check completed task list");
     	Assert.assertEquals(todoPage.listOfCompletedToDoItems(),0);
     	todoPage.completeTodoItem(0);
     	todoPage.filterCompletedItems();
@@ -115,8 +127,11 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 8)
     public void testActiveTaskFilter() {
+    	logger.info("Inside testActiveTaskFilter method to check Active task list");
+    	
     	todoPage.addTodoItem("go for a spin");
     	todoPage.addTodoItem("watch movie");
+    	
     	todoPage.filterActiveToDoItems();
     	Assert.assertTrue(todoPage.listOfActiveToDoItems()>0);
     	Assert.assertEquals(todoPage.listOfCompletedToDoItems(),0);
@@ -127,6 +142,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 9)
     public void testAllTasksFilter() {
+    	logger.info("Inside testAllTasksFilter method to check all tasks in the list");
     	todoPage.filterAllToDoItems();
     	Assert.assertTrue(todoPage.getTodoCount()>0);
     }
@@ -137,6 +153,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 10)
     public void testWhenAllToDOAreComplete() {
+    	logger.info("Inside testAllTasksFilter method to check all completed task list");
     	todoPage.markAllAsCompleted();
     	Assert.assertTrue(todoPage.listOfCompletedToDoItems()>0);
     	Assert.assertTrue(todoPage.getTodoCount()>0);
@@ -149,6 +166,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 11)
     public void testWhenAllToDOAreActive() {
+    	logger.info("Inside testAllTasksFilter method to check all Active task list");
     	todoPage.markAllAsCompleted();
     	Assert.assertEquals(todoPage.listOfCompletedToDoItems(),0);
     	Assert.assertTrue(todoPage.getTodoCount()>0);
@@ -161,6 +179,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 12)
     public void testFilterAfterDeletingCompletedTask() {
+    	logger.info("Inside testAllTasksFilter method to check list in all filters after deleting completed task");
     	todoPage.addTodoItem("this is good");
     	todoPage.addTodoItem("this is really good");
     	todoPage.completeTodoItem(0);
@@ -177,6 +196,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 13)
     public void testFilterAfterDeletingActiveTask() {
+    	logger.info("Inside testAllTasksFilter method to check list in all filters after deleting active task");
     	todoPage.addTodoItem("this is good");
     	todoPage.completeTodoItem(0);
     	todoPage.deleteTodoItem(2);
@@ -191,6 +211,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 14)
     public void testEnteringLongName() {
+    	logger.info("Inside testAllTasksFilter method to check whether a long task can be included or not");
     	todoPage.markAllAsCompleted();
     	todoPage.clearCompleteToDoItems();
     	todoPage.addTodoItem(TASK_NAME_LONG_TEXT);
@@ -198,13 +219,12 @@ public class TodoPageTest extends WebBrowserDriverManager {
 
     }
     
-    
-    
     /**
      * Test entering a string with spaces at the start and end
      */
     @Test(priority = 15)
     public void testEnteringSpaceBeforeAfterString() {
+    	logger.info("Inside testEnteringSpaceBeforeAfterString method to check trimming of string");
     	todoPage.markAllAsCompleted();
     	todoPage.clearCompleteToDoItems();
     	todoPage.addTodoItem("  This is new task  ");
@@ -216,6 +236,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 16)
     public void testEnteringSpecialCharacter() {
+    	logger.info("Inside testEnteringSpecialCharacter method to check special character can be added or not");
     	todoPage.markAllAsCompleted();
     	todoPage.clearCompleteToDoItems();
     	String specialChar="!@#$%^";
@@ -228,6 +249,7 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 17)
     public void testDuplicateToDoAtsk() {
+    	logger.info("Inside testDuplicateToDoAtsk method to check duplicate tasks can be entered or not");
     	todoPage.markAllAsCompleted();
     	todoPage.clearCompleteToDoItems();
     	todoPage.addTodoItem("test1");
@@ -240,17 +262,18 @@ public class TodoPageTest extends WebBrowserDriverManager {
      */
     @Test(priority = 18)
     public void testMarkAsCompletedAlreadyCompletedTask() {
+    	logger.info("Inside testMarkAsCompletedAlreadyCompletedTask method to uncheck the current completed task");
     	todoPage.markAllAsCompleted();
     	todoPage.clearCompleteToDoItems();
     
     	todoPage.addTodoItem("test1");
     	
     	todoPage.completeTodoItem(0);
+    	todoPage.completeTodoItem(0);
 
-    	Assert.assertEquals(todoPage.listOfCompletedToDoItems(),1);
-    }
-
-    
+    	Assert.assertEquals(todoPage.listOfCompletedToDoItems(),0);
+    }    
+   
     
     /**
      * Cleans up and closes the browser after test execution.

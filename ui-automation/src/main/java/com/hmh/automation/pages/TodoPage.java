@@ -3,6 +3,8 @@ package com.hmh.automation.pages;
 import java.time.Duration;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -25,6 +27,7 @@ public class TodoPage {
     WebDriver driver;
     public static final String COMPLETED="completed";
 	public static final String CLASS="class";
+	private static final Logger logger = LogManager.getLogger(TodoPage.class);
 	
     /**
      * Constructor to initialize the WebDriver and WebDriverWait.
@@ -32,6 +35,7 @@ public class TodoPage {
      * @param driver The WebDriver instance used to interact with the browser.
      */
     public TodoPage(WebDriver driver) {
+    	logger.info("Initialising drivers.....");
     	this.driver=driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         PageFactory.initElements(driver, this);
@@ -111,6 +115,7 @@ public class TodoPage {
     @FindBy(xpath = "//ul[@class='todo-list']/li//label")
     private List<WebElement> todoLabel;
     
+    
     /**
      * List of WebElements representing the todo task label buttons for editing test".
      */
@@ -126,6 +131,7 @@ public class TodoPage {
      * @param task The task to be added.
      */
     public void addTodoItem(String task) {
+    	logger.info("Inside addTodoItem method todoItem:{}",task);
         todoInput.sendKeys(task + "\n");
     }
     
@@ -134,6 +140,7 @@ public class TodoPage {
      * @param index The index of todo task to get text
      */
     public String getToDoText(int index) {
+    	logger.info("Inside getToDoText method for ToDoTask to get text at:{}",index+1);
         return todoItemList.get(index).getText();
     }
 
@@ -143,6 +150,7 @@ public class TodoPage {
      * @param index The index of the task to be marked as completed.
      */
     public void completeTodoItem(int index) {
+    	logger.info("Inside completeTodoItem method to mark task as complete at:{}",index+1);
         check_Buttons.get(index).click();
     }
 
@@ -153,6 +161,7 @@ public class TodoPage {
      */
 
     public void deleteTodoItem(int index) {
+    	logger.info("Inside deleteTodoItem method to delete the task at:{}",index+1);
     	 Actions actions = new Actions(driver);
     	    WebElement todoItem = todoItemList.get(index);
     	    actions.moveToElement(todoItem).perform(); // Hover over the item
@@ -164,6 +173,7 @@ public class TodoPage {
      * 
      */
     public void clearCompleteToDoItems() {
+    	logger.info("Inside clearCompleteToDoItems method to clear the completed task");
     	clearCompleted_Button.click();
     	clearCompletedTask();
     }
@@ -172,6 +182,7 @@ public class TodoPage {
      * Gives the list of completed task
      */
     public void filterCompletedItems() {
+    	logger.info("Inside filterCompletedItems method to filter the completed tasks");
     	completed_Button.click();
     }
     
@@ -179,6 +190,7 @@ public class TodoPage {
      * Gives the size of completed items from the tasks
      */
     public int listOfCompletedToDoItems() {
+    	logger.info("Inside listOfCompletedToDoItems method to get the size of completed tasks");
     	return completedToDoItems.size();
     }
     
@@ -186,6 +198,7 @@ public class TodoPage {
      * clicks on Active button
      */
     public void filterActiveToDoItems() {
+    	logger.info("Inside filterActiveToDoItems method to click active button ");
     	active_Button.click();
     }
     
@@ -193,6 +206,7 @@ public class TodoPage {
      * clicks on All filter button
      */
     public void filterAllToDoItems() {
+    	logger.info("Inside filterAllToDoItems method to click all button ");
     	all_Button.click();
     }
     
@@ -201,6 +215,7 @@ public class TodoPage {
      * Gives the list of Active ToDo tasks
      */
     public int listOfActiveToDoItems() {
+    	logger.info("Inside listOfActiveToDoItems method to get all active Items ");
     	return activeToDoItems.size();
     }
    
@@ -210,6 +225,7 @@ public class TodoPage {
      * @return The number of tasks currently in the list.
      */
     public int getTodoCount() {
+    	logger.info("Inside getTodoCount method to get count of all tasks ");
         return todoItemList.size();
     }
 
@@ -220,6 +236,7 @@ public class TodoPage {
      * @return True if the task is completed, otherwise false.
      */
     public boolean isTaskCompleted(int index) {
+    	logger.info("Inside isTaskCompleted method to check whether task is completed or not at:{}", index+1);
         WebElement tasks = todoItemList.get(index);
         return tasks.getDomAttribute(CLASS).contains(COMPLETED);
     }
@@ -228,6 +245,7 @@ public class TodoPage {
      * Marks all tasks in the Todo list as completed.
      */
     public void markAllAsCompleted() {
+    	logger.info("Inside markAllAsCompleted method to mark all task as complete");
         toggle_all_button.click(); 
     }
 
@@ -237,8 +255,10 @@ public class TodoPage {
      * @return True if all tasks are completed, otherwise false.
      */
     public boolean isAllTaskCompleted() {
+    	logger.info("Inside isAllTaskCompleted method to check all task as complete");
     	for(WebElement webElement:todoItemList) {
     		if(!webElement.getDomAttribute(CLASS).contains(COMPLETED)) {
+    			
     			return false;
     		}
     	}
@@ -250,6 +270,7 @@ public class TodoPage {
      * 
      */
     public void clearCompletedTask() {
+    	logger.info("Inside clearCompletedTask method to check znc clear all completed task");
     	int index = 0;
     	for(WebElement webElement:todoItemList) {
     		if(webElement.getDomAttribute(CLASS).contains(COMPLETED)) {
