@@ -8,7 +8,9 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.hmh.automation.base.WebBrowserDriverManager;
+import com.aventstack.extentreports.Status;
+import com.hmh.automation.base.ExtentReportManager;
+import com.hmh.automation.base.TestDriverManager;
 import com.hmh.automation.pages.TodoPage;
 import com.hmh.automation.utils.ConfigReader;
 
@@ -16,7 +18,7 @@ import com.hmh.automation.utils.ConfigReader;
  * Test class for verifying the functionality of the TodoMVC application.
  * This class extends WebBrowserDriverManager to manage browser setup and teardown.
  */
-public class TodoPageTest extends WebBrowserDriverManager {
+public class TodoPageTest extends TestDriverManager{
     
     private WebDriver driver;
     private TodoPage todoPage;
@@ -31,7 +33,8 @@ public class TodoPageTest extends WebBrowserDriverManager {
     @BeforeClass
     public void setUpTest() {
     	logger.info("Setting up the test..");
-        driver = setup(ConfigReader.getConfig().getProperty("browser"));  // Start browser
+    	test = ExtentReportManager.createTest("ToDo list test report");
+        driver = setup(ConfigReader.getConfig().getProperty("browser"),Boolean.valueOf(ConfigReader.getConfig().getProperty("runheadless")));  // Start browser
         driver.get(ConfigReader.getConfig().getProperty("url"));  // Navigate to the application
         todoPage = new TodoPage(driver);  // Initialize Page Object Model (POM)
     }
@@ -45,7 +48,9 @@ public class TodoPageTest extends WebBrowserDriverManager {
     	logger.info("Inside testAddTodoItem to add task in todo ..");
         todoPage.addTodoItem("Buy groceries");
         Assert.assertEquals(todoPage.getTodoCount(), 1, "Todo count mismatch!");
+        
     }
+
 
     /**
      * Test case to verify adding multiple todo items.
