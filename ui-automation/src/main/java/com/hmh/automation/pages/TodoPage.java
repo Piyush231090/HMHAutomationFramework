@@ -47,6 +47,7 @@ public class TodoPage {
     @FindBy(xpath = "//input[@id='todo-input']")
     private WebElement todoInput;
 
+    private By todoItems = By.cssSelector(".todo-list li");
     /**
      * List of WebElements representing all todo items in the list.
      */
@@ -119,8 +120,11 @@ public class TodoPage {
     /**
      * List of WebElements representing the todo task label buttons for editing test".
      */
-    @FindBy(xpath = "(//div[@class='input-container'])[2]")
-    private WebElement editInput;
+    // Locate the input field for editing (only visible in edit mode)
+    @FindBy(xpath = "//div[contains(@class, 'input-container')]//input[contains(@class, 'new-todo')]")
+    private WebElement editInputField;
+
+
     
     
     // Methods
@@ -270,7 +274,7 @@ public class TodoPage {
      * 
      */
     public void clearCompletedTask() {
-    	logger.info("Inside clearCompletedTask method to check znc clear all completed task");
+    	logger.info("Inside clearCompletedTask method to check clear all completed task");
     	int index = 0;
     	for(WebElement webElement:todoItemList) {
     		if(webElement.getDomAttribute(CLASS).contains(COMPLETED)) {
@@ -288,15 +292,28 @@ public class TodoPage {
      * @throws InterruptedException 
      * 
      */
-    public void editText(int index,String text){
-    	//Actions actions = new Actions (driver);
-    	//actions.doubleClick(todoLabel.get(index)).perform();
-    	WebElement taskToEdit = todoLabel.get(index);
-    	 ((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('dblclick', {bubbles: true}))", taskToEdit);
+    public void editText(int index,String text) throws InterruptedException{
+    	
+    	WebElement todoItem = driver.findElements(todoItems).get(index);
+        Actions actions = new Actions(driver);
 
-    	WebElement editField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='view']//input[@id='todo-input']")));
-    	editField.clear();
-    	editField.sendKeys(text);
-    	editField.sendKeys(Keys.ENTER);
-    }
+        // Double-click to activate edit mode
+        actions.doubleClick(todoItem).perform();
+
+        // Locate the active input field
+        WebElement editInput = driver.findElement(By.cssSelector(".todo-list li.editing .edit"));
+
+        // Clear existing text and enter new text
+        editInput.sendKeys(Keys.CONTROL + "a"); // Select all text
+        editInput.sendKeys(Keys.BACK_SPACE); // Clear text
+        editInput.sendKeys("test");
+        editInput.sendKeys(Keys.ENTER); // Press Enter to save
+            
+//        WebElement taskToEdit = todoLabel.get(index);
+//       	((JavascriptExecutor) driver).executeScript("arguments[0].dispatchEvent(new Event('dblclick', {bubbles: true}))", taskToEdit);
+//
+//       	WebElement editField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='view']//input[@id='todo-input']")));
+        }
+
+    
 }
