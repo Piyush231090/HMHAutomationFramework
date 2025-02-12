@@ -4,11 +4,11 @@ The framework is designed to ensure maintainability, reusability, and scalabilit
 
 # Technologies Used
 
-Programming Language: Java 
+*Programming Language: Java 
 
-Automation Tool: Selenium WebDriver
+*Automation Tool: Selenium WebDriver
 
-Test Framework: TestNG
+*Test Framework: TestNG
 
 Design Pattern: Page Object Model (POM)
 
