@@ -17,9 +17,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
- * This class represents the Page Object Model (POM) for the TodoMVC
- * application. It contains methods to interact with the Todo list such as
- * adding, completing, deleting, and verifying tasks.
+ * This class represents the Page Object Model (POM) for the TodoMVCapplication. 
+ * It contains methods to interact with the Todo list such as adding, completing, 
+ * deleting, and verifying tasks.
  */
 public class TodoPage {
 
