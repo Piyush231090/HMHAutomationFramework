@@ -4,50 +4,50 @@ The framework is designed to ensure maintainability, reusability, and scalabilit
 
 # Technologies Used
 
-Programming Language: Java 
+* Programming Language: Java 
 
-Automation Tool: Selenium WebDriver
+* Automation Tool: Selenium WebDriver
 
-Test Framework: TestNG
+* Test Framework: TestNG
 
-Design Pattern: Page Object Model (POM)
+* Design Pattern: Page Object Model (POM)
 
-Build Tool: Maven
+* Build Tool: Maven
 
-Dependency Management: Maven (pom.xml)
+* Dependency Management: Maven (pom.xml)
 
-Logging: Log4j
+* Logging: Log4j
 
-Reports: Extent Reports / TestNG Reports
+* Reports: Extent Reports / TestNG Reports
+  
+* WebDriver Management: WebDriverManager (optional)
 
-WebDriver Management: WebDriverManager (optional)
-
-IDE Used: Eclipse
+* IDE Used: Eclipse
 
 # Features
 
-Page Object Model (POM) implementation for better test maintenance.
+* Page Object Model (POM) implementation for better test maintenance.
 
-TestNG-based execution with sequential/parallel test execution support.
+* TestNG-based execution with sequential/parallel test execution support.
 
-Maven integration for easy dependency management and test execution.
+* Maven integration for easy dependency management and test execution.
 
-Headless execution support for CI/CD environments.
+* Headless execution support for CI/CD environments.
 
-Reporting with Extent Reports/TestNG Reports for test results analysis.
+* Reporting with Extent Reports/TestNG Reports for test results analysis.
 
 
 # Prerequisites
 
 Ensure the following tools are installed on your system:
 
-Java (JDK 8 or higher) - Install and set up environment variables (JAVA_HOME).
+* Java (JDK 8 or higher) - Install and set up environment variables (JAVA_HOME).
 
-Maven - Install Maven and configure it in the system path.
+* Maven - Install Maven and configure it in the system path.
 
-ChromeDriver / FirefoxDriver - Ensure appropriate WebDriver binaries are available, or use WebDriverManager.
+* ChromeDriver / FirefoxDriver - Ensure appropriate WebDriver binaries are available, or use WebDriverManager.
 
-IDE - IntelliJ IDEA / Eclipse for running the tests.
+* IDE - IntelliJ IDEA / Eclipse for running the tests.
 
 # How to Set Up and Run Tests
 ## Clone the Repository
@@ -74,15 +74,15 @@ Extent Reports: target/extent-reports.html
 
 # Configuration
 The config.properties file (located in src/test/resources/) contains environment-specific settings like URLs, browser, wait and runheadless.
-browser=chrome ---> This suppport multiple browsers, chrome/firefox(whichever mentioned)
-url=https://todomvc.com/examples/react/dist/  ---> this gives the application url
-implicitWait=10  ---> used for wait
-runheadless=True ---> runheadless is marked as True to sun the testcases without opening ui/browser. If false it will open UI
+* browser=chrome ---> This suppport multiple browsers, chrome/firefox(whichever mentioned)
+* url=https://todomvc.com/examples/react/dist/  ---> this gives the application url
+* implicitWait=10  ---> used for wait
+* runheadless=True ---> runheadless is marked as True to sun the testcases without opening ui/browser. If false it will open UI
 
 
 ## Future Enhancements
-Parameterization can be done to run the test on multiple set of data
-Grouping of test for different test suites 
-Add support for CI/CD integration (Jenkins/GitHub Actions)
-Implement Docker-based Selenium Grid for distributed testing
-Logging using Extent report library
+* Parameterization can be done to run the test on multiple set of data
+* Grouping of test for different test suites 
+* Add support for CI/CD integration (Jenkins/GitHub Actions)
+* Implement Docker-based Selenium Grid for distributed testing
+* Logging using Extent report library
